@@ -83,7 +83,7 @@ bash /root/.acme.sh/acme.sh --upgrade --use-wget --auto-upgrade
 }
 
 installCA(){
-if [[ -f '/etc/hysteria/config.json' ]]; then
+if [[ -f '/etc/hysteria/config.json' ]] && [[ ! -f /etc/hysteria/cert.crt && ! -f /etc/hysteria/private.key ]]; then
 echo ${ym} > /etc/hysteria/ca.log
 bash ~/.acme.sh/acme.sh --install-cert -d ${ym} --key-file /etc/hysteria/private.key --fullchain-file /etc/hysteria/cert.crt --ecc
 fi
@@ -188,15 +188,10 @@ echo
 yellow "建议二：更换下当前本地网络IP环境，再尝试执行脚本"
 rm -rf acme.sh
 }
-if [[ -f /etc/hysteria/cert.crt && -f /etc/hysteria/private.key ]]; then
-if [[ -s /etc/hysteria/cert.crt && -s /etc/hysteria/private.key ]]; then
+if [[ -f /root/cert.crt && -f /root/private.key ]] && [[ -s /root/cert.crt && -s /root/private.key ]]; then
+if [[ -f /etc/hysteria/cert.crt && -f /etc/hysteria/private.key ]] && [[ -s /etc/hysteria/cert.crt && -s /etc/hysteria/private.key ]]; then
 green "hysteria域名证书申请成功或已存在！域名证书（cert.crt）和密钥（private.key）已保存到 /etc/hysteria 文件夹" 
-else
-fail
 fi
-fi
-if [[ -f /root/cert.crt && -f /root/private.key ]]; then
-if [[ -s /root/cert.crt && -s /root/private.key ]]; then
 sed -i '/--cron/d' /etc/crontab
 echo "0 0 * * * root bash /root/.acme.sh/acme.sh --cron -f >/dev/null 2>&1" >> /etc/crontab
 green "root目录下的域名证书申请成功或已存在！域名证书（cert.crt）和密钥（private.key）已保存到 /root 文件夹" 
@@ -207,7 +202,6 @@ green "/root/private.key"
 rm -rf acme.sh
 else
 fail
-fi
 fi
 }
 
