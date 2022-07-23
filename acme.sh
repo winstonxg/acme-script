@@ -298,7 +298,6 @@ yellow "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 yellow " 提示："
 yellow " 一、standalone模式仅支持单域名证书申请"
 yellow " 二、DNS API模式不支持freenom免费域名申请，支持单域名与泛域名证书申请"
-yellow " 三、证书申请成功后，域名证书（cert.crt）和密钥（private.key）保存在root目录下"
 echo
 green " 1. acme.sh申请letsencrypt ECC证书（支持standalone模式与DNS API模式） "
 green " 2. 查询已申请成功的域名及自动续期时间点；撤销并删除当前已申请的域名证书 "
