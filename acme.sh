@@ -89,7 +89,7 @@ yellow "建议一：更换下二级域名名称再尝试执行脚本（重要）
 green "例：原二级域名 x.ygkkk.eu.org 或 x.ygkkk.cf ，在cloudflare中重命名其中的x名称，确定并生效"
 echo
 yellow "建议二：更换下当前本地网络IP环境，再尝试执行脚本"
-rm -rf acme.sh
+rm -rf acme.sh && exit
 }
 if [[ -f /root/cert.crt && -f /root/private.key ]] && [[ -s /root/cert.crt && -s /root/private.key ]]; then
 if [[ -f '/etc/hysteria/config.json' ]]; then
@@ -242,7 +242,7 @@ bash /root/.acme.sh/acme.sh --remove -d ${ym} --ecc
 rm -rf cert.crt private.key
 green "撤销并删除${ym}域名证书成功"
 else
-red "未找到你输入的${ym}域名证书，请自行核实！"
+red "未找到你输入的${ym}域名证书，请自行核实！" && exit
 fi
 }
 acmerenew(){
@@ -263,7 +263,7 @@ if [[ -n $(bash /root/.acme.sh/acme.sh --list | grep $ym) ]]; then
 bash /root/.acme.sh/acme.sh --renew -d ${ym} --force --ecc
 checktls
 else
-red "未找到你输入的${ym}域名证书，请自行核实！"
+red "未找到你输入的${ym}域名证书，请自行核实！" && exit
 fi
 ;;
 0 ) start_menu;;
