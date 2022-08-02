@@ -25,13 +25,19 @@ release="Centos"
 else 
 red "不支持你当前系统，请选择使用Ubuntu,Debian,Centos系统" && rm -rf acme.sh && exit 1
 fi
+
+v4v6(){
+v6=$(curl -s6m5 https://ip.gs -k)
+v4=$(curl -s4m5 https://ip.gs -k)
+}
+
+
 acme1(){
 [[ $(type -P yum) ]] && yumapt='yum -y' || yumapt='apt -y'
 [[ $(type -P curl) ]] || (yellow "检测到curl未安装，升级安装中" && $yumapt update;$yumapt install curl)
 [[ $(type -P lsof) ]] || (yellow "检测到lsof未安装，升级安装中" && $yumapt update;$yumapt install lsof)
 [[ $(type -P socat) ]] || $yumapt install socat
-v6=$(curl -s6m3 https://ip.gs -k)
-v4=$(curl -s4m3 https://ip.gs -k)
+v4v6
 if [[ -z $v4 ]]; then
 yellow "检测到VPS为纯IPV6 Only，添加dns64"
 echo -e nameserver 2a01:4f8:c2c:123f::1 > /etc/resolv.conf
@@ -185,6 +191,7 @@ installCA
 checktls
 }
 wro(){
+v4v6
 if [[ -n $(echo $domainIP | grep nginx) ]]; then
 yellow "当前域名解析到的IP：无"
 red "域名解析无效，请检查域名是否填写正确或稍等几分钟等待解析完成再执行脚本" && rm -rf acme.sh && exit 1
